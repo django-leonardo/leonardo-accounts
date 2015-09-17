@@ -1,0 +1,3 @@
+django-leonardo>=1.0.0
+leonardo-store
+-e git+https://github.com/michaelkuty/django-oscar-accounts#egg=accounts
