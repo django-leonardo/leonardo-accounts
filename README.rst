@@ -5,6 +5,8 @@ Leonardo Leonardo Accounts
 
 Oscar Accounts to Leonardo CMS. This module uses our fork which works with Oscar 1.0 and Django 1.8. Basically this module support managing user accounting on your Django Site. This is just wrapper around standard ``accounts`` app with auto load to Leonardo CMS.
 
+For leonardo use ``pip install -e git+https://github.com/michaelkuty/django-oscar-accounts#egg=accounts``
+
 .. contents::
     :local:
 
