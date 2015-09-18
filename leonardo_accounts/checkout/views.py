@@ -89,7 +89,7 @@ class PaymentDetailsView(views.PaymentDetailsView):
                 "An error occurred with the account redemption")
 
         # flush session allocations
-        self.set_account_allocations(Allocations())
+        #self.set_account_allocations(Allocations())
 
         # If we get here, payment was successful.  We record the payment
         # sources and event to complete the audit trail for this order
