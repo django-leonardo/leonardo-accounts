@@ -1,3 +1,2 @@
-django-leonardo>=1.0.0
 leonardo-store
-django-oscar-accounts
+-e git+git@github.com:michaelkuty/django-oscar-accounts.git#egg=accounts
