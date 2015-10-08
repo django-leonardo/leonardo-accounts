@@ -24,3 +24,6 @@ OSCAR_DASHBOARD_NAVIGATION.append(
             },
         ]
     })
+
+# show secondary accounts in profile actions
+STORE_ACCOUNTS_SHOW_SECONDARY = True

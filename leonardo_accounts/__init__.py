@@ -19,6 +19,10 @@ LEONARDO_CONFIG = {
     'ACCOUNTS_MIN_LOAD_VALUE': (D('30.00'), ('Min load value')),
 }
 
+LEONARDO_PLUGINS = [
+    ('leonardo_accounts.apps.accounts', ('Accounts: User'),)
+]
+
 
 class Config(AppConfig):
     name = 'leonardo_accounts'

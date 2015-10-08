@@ -1,0 +1,67 @@
+{% extends widget.get_base_template %}
+{% load url from future %}
+{% load currency_filters %}
+{% load i18n %}
+{% load applicationcontent_tags %}
+
+{% fragment request "_page_title" %}{% block page_title %}{{ account }}{% endblock %}{% endfragment %}
+
+{% fragment request "_breadcrumbs" %}
+{% block breadcrumbs %}
+<ul class="breadcrumb">
+    <li>
+        <a href="{% url 'accounts:index' %}">{% trans "Dashboard" %}</a>
+        <span class="divider">/</span>
+    </li>
+    <li>
+        <a href="{% url 'accounts:accounts-list' %}">{% trans "Accounts" %}</a>
+        <span class="divider">/</span>
+    </li>
+    {% if account %}
+        <li class="active">{% trans "Update" %}</li>
+    {% else %}
+        <li class="active">{% trans "Create" %}</li>
+    {% endif %}
+</ul>
+{% endblock %}
+{% endfragment %}
+
+{% block content %}
+
+{% include 'accounts/dashboard/partials/account_detail.html' %}
+<p>
+    <a class="btn" href="{% url 'accounts:accounts-update' account.id %}">{% trans "Edit" %}</a>
+	<a href="{% url 'accounts:accounts-top-up' account.id %}" class="btn">{% trans "Top-up" %}</a>
+	<a href="{% url 'accounts:accounts-withdraw' account.id %}" class="btn">{% trans "Withdraw" %}</a>
+</p>
+
+<h2>{% trans "Transactions" %}</h2>
+{% if transactions %}
+	<table id="" class="table">
+		<thead>
+			<tr>
+				<th>{% trans "Transfer" %}</th>
+				<th>{% trans "Amount" %}</th>
+				<th>{% trans "Description" %}</th>
+				<th>{% trans "Authorised by" %}</th>
+				<th>{% trans "Date" %}</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for txn in transactions %}
+			<tr>
+				<td><a href="{% url 'accounts:transfers-detail' txn.transfer.reference %}">{{ txn.transfer }}</a></td>
+				<td>{{ txn.amount|currency }}</td>
+				<td>{{ txn.transfer.description|default:"-" }}</td>
+				<td>{{ txn.transfer.user|default:"-" }}</td>
+				<td>{{ txn.date_created }}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+    {% include "partials/pagination.html" %}
+{% else %}
+	<p>{% trans "No transactions." %}</p>
+{% endif %}
+
+{% endblock content %}
