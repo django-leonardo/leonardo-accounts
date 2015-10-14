@@ -6,7 +6,7 @@ from leonardo.decorators import require_auth
 urlpatterns = [
     url(r'^$',
         AccountListView.as_view(),
-        name='accounts-list'),
+        name='index'),
     url(r'^$',
         AccountListView.as_view(),
         name='index'),
