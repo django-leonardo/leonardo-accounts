@@ -13,10 +13,10 @@ LEONARDO_APPS = [
 ]
 
 LEONARDO_CONFIG = {
-    'ACCOUNTS_UNIT_NAME': ('Giftcard', ('Account unit name')),
-    'ACCOUNTS_UNIT_NAME_PLURAL': ('Pending', ('Account unit name plural')),
+    'ACCOUNTS_UNIT_NAME': ('Account', ('Account unit name')),
+    'ACCOUNTS_UNIT_NAME_PLURAL': ('Accounts', ('Account unit name plural')),
     'ACCOUNTS_MAX_ACCOUNT_VALUE': (D('10000.00'), ('Max account value')),
-    'ACCOUNTS_MIN_LOAD_VALUE': (D('30.00'), ('Min load value')),
+    'ACCOUNTS_MIN_LOAD_VALUE': (D('0.00'), ('Min load value')),
 }
 
 LEONARDO_PLUGINS = [
