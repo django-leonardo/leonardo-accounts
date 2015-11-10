@@ -1,25 +1,32 @@
 import datetime
 from decimal import Decimal as D
 
-from django.views import generic
-from django.core.urlresolvers import reverse
+from accounts import exceptions, facade, names
+from accounts.dashboard import forms, reports
 from django import http
-from django.utils import timezone
-from django.shortcuts import get_object_or_404
-from django.db.models import Sum
-from django.contrib import messages
-from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
+from django.contrib import messages
+from django.core.urlresolvers import reverse
+from django.db.models import Q, Sum
+from django.shortcuts import get_object_or_404
+from django.utils import timezone
+from django.utils.translation import ugettext_lazy as _
+from django.views import generic
 from oscar.core.loading import get_model
 from oscar.templatetags.currency_filters import currency
-
-from accounts.dashboard import forms, reports
-from accounts import facade, names, exceptions
 
 AccountType = get_model('accounts', 'AccountType')
 Account = get_model('accounts', 'Account')
 Transfer = get_model('accounts', 'Transfer')
 Transaction = get_model('accounts', 'Transaction')
+
+
+def _get_all_accounts(user):
+    '''return all user accounts in one list'''
+    accounts = []
+    accounts.extend(user.account_set.all())
+    accounts.extend(user.accounts.all())
+    return accounts
 
 
 class AccountListView(generic.ListView):
@@ -77,40 +84,6 @@ class AccountListView(generic.ListView):
         self.description = desc_template % desc_ctx
 
         return queryset
-
-
-class AccountCreateView(generic.CreateView):
-    model = Account
-    context_object_name = 'account'
-    template_name = 'accounts/account_form.html'
-    form_class = forms.NewAccountForm
-
-    def get_context_data(self, **kwargs):
-        ctx = super(AccountCreateView, self).get_context_data(**kwargs)
-        ctx['title'] = _("Create a new %s") % names.UNIT_NAME.lower()
-        return ctx
-
-    def form_valid(self, form):
-        account = form.save()
-
-        # Load transaction
-        source = form.get_source_account()
-        amount = form.cleaned_data['initial_amount']
-        try:
-            facade.transfer(source, account, amount,
-                            user=self.request.user,
-                            description=_("Creation of account"))
-        except exceptions.AccountException as e:
-            messages.error(
-                self.request,
-                _("Account created but unable to load funds onto new "
-                  "account: %s") % e)
-        else:
-            messages.success(
-                self.request,
-                _("New account created with code '%s'") % account.code)
-        return http.HttpResponseRedirect(
-            reverse('dashboard:accounts-detail', kwargs={'pk': account.id}))
 
 
 class AccountUpdateView(generic.UpdateView):
@@ -182,7 +155,14 @@ class AccountTransactionsView(generic.ListView):
     template_name = 'accounts/account_detail.html'
 
     def get(self, request, *args, **kwargs):
+
+        account_ids = [a.id for a in _get_all_accounts(self.request.user)]
+
+        if self.account.id not in account_ids:
+            return http.HttpResponseForbidden(request, *args, **kwargs)
+
         self.account = get_object_or_404(Account, id=kwargs['pk'])
+
         return super(AccountTransactionsView, self).get(
             request, *args, **kwargs)
 
@@ -209,7 +189,8 @@ class TransferListView(generic.ListView):
         return ctx
 
     def get_queryset(self):
-        queryset = self.model.objects.all()
+        account_ids = [a.id for a in _get_all_accounts(self.request.user)]
+        queryset = self.model.objects.filter(Q(source__id__in=account_ids) | Q(destination__id__in=account_ids))
 
         if 'reference' not in self.request.GET:
             # Form not submitted

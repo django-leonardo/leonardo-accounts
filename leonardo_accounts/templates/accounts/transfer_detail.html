@@ -1,0 +1,69 @@
+{% extends widget.get_base_template %}
+{% load url from future %}
+{% load currency_filters %}
+{% load i18n %}
+{% load applicationcontent_tags %}
+
+{% block content %}
+{% fragment request "_breadcrumb" %}
+{% block breadcrumbs %}
+<ul class="breadcrumb">
+    <li>
+		<a href="{% url 'dashboard:index' %}">{% trans "Dashboard" %}</a>
+        <span class="divider">/</span>
+    </li>
+    <li>
+		<a href="{% url 'accounts:accounts-list' %}">{% trans "Accounts" %}</a>
+        <span class="divider">/</span>
+    </li>
+    <li>
+		<a href="{% url 'accounts:transfers-list' %}">{% trans "Transfers" %}</a>
+        <span class="divider">/</span>
+    </li>
+	<li class="active">{{ transfer.reference }}</li>
+</ul>
+{% endblock %}
+{% endfragment %}
+
+{% fragment request "_page_title" %}
+{% block page_title %}Transfer {{ transfer.reference }}{% endblock %}
+{% endfragment %}
+
+<table id="" class="table">
+	<tbody>
+		<tr>
+			<th>{% trans "Reference" %}</th>
+			<td>{{ transfer.reference }}</td>
+		</tr>
+		<tr>
+			<th>{% trans "Source" %}</th>
+			<td><a href="{% url 'accounts:accounts-detail' transfer.source.id %}">{{ transfer.source }}</a></td>
+		</tr>
+		<tr>
+			<th>{% trans "Destination" %}</th>
+			<td><a href="{% url 'accounts:accounts-detail' transfer.destination.id %}">{{ transfer.destination }}</a></td>
+		</tr>
+		<tr>
+			<th>{% trans "Amount" %}</th>
+			<td>{{ transfer.amount|currency }}</td>
+		</tr>
+		<tr>
+			<th>{% trans "Merchant reference" %}</th>
+			<td>{{ transfer.merchant_reference|default:"-" }}</td>
+		</tr>
+		<tr>
+			<th>{% trans "Description" %}</th>
+			<td>{{ transfer.description|default:"-" }}</td>
+		</tr>
+		<tr>
+			<th>{% trans "Authorised by" %}</th>
+			<td>{{ transfer.user }}</td>
+		</tr>
+		<tr>
+			<th>{% trans "Date" %}</th>
+			<td>{{ transfer.date_created }}</td>
+		</tr>
+	</tbody>
+</table>
+
+{% endblock content %}

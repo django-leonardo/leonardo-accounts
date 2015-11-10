@@ -35,7 +35,7 @@
         <form class="form-horizontal" method="get" action=".">
             {% include 'partials/form_fields.html' %}
             <button type="submit" class="btn btn-primary">{% trans "Search" %}</button>
-            or <a href="{% url 'dashboard:transfers-list' %}">{% trans "reset" %}</a>.
+            or <a href="{% url 'accounts:transfers-list' %}">{% trans "reset" %}</a>.
         </form>
     </div>
 
@@ -57,9 +57,9 @@
 			</tr>
 			{% for transfer in transfers %}
 			<tr>
-				<td><a href="{% url 'dashboard:transfers-detail' transfer.reference %}">{{ transfer.reference }}</a></td>
-				<td><a href="{% url 'dashboard:accounts-detail' transfer.source.id %}">{{ transfer.source }}</a></td>
-				<td><a href="{% url 'dashboard:accounts-detail' transfer.destination.id %}">{{ transfer.destination }}</a></td>
+				<td><a href="{% url 'accounts:transfers-detail' transfer.reference %}">{{ transfer.reference }}</a></td>
+				<td><a href="{% url 'accounts:accounts-detail' transfer.source.id %}">{{ transfer.source }}</a></td>
+				<td><a href="{% url 'accounts:accounts-detail' transfer.destination.id %}">{{ transfer.destination }}</a></td>
 				<td>{{ transfer.amount|currency }}</td>
 				<td>{{ transfer.merchant_reference|default:"-" }}</td>
 				<td>{{ transfer.description|default:"-" }}</td>
