@@ -35,6 +35,7 @@ Installation
 
 .. code-block:: bash
 
+	pip install -e git+git@github.com:michaelkuty/django-oscar-accounts.git#egg=accounts
     pip install leonardo_accounts
 
 Read More
