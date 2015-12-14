@@ -1,7 +1,7 @@
 {% extends 'dashboard/layout.html' %}
-{% load url from future %}
 {% load currency_filters %}
 {% load i18n %}
+{% load leonardo_tags %}
 
 {% block title %}
 {% trans "Account" %} #{{ account.id }} | {{ block.super }}
@@ -10,11 +10,11 @@
 {% block breadcrumbs %}
 <ul class="breadcrumb">
     <li>
-		<a href="{% url 'dashboard:index' %}">{% trans "Dashboard" %}</a>
+		<a href="{% url 'dashboard:index' 'leonardo_store.apps.dashboard' %}">{% trans "Dashboard" %}</a>
         <span class="divider">/</span>
     </li>
     <li>
-		<a href="{% url 'dashboard:accounts-list' %}">{% trans "Accounts" %}</a>
+		<a href="{% url 'dashboard:accounts-list' 'leonardo_store.apps.dashboard' %}">{% trans "Accounts" %}</a>
         <span class="divider">/</span>
     </li>
     <li class="active">{{ account }}</li>
@@ -31,13 +31,13 @@
 
 {% include 'accounts/dashboard/partials/account_detail.html' %}
 <p>
-    <a class="btn" href="{% url 'dashboard:accounts-update' account.id %}">{% trans "Edit" %}</a>
-	<a href="{% url 'dashboard:accounts-top-up' account.id %}" class="btn">{% trans "Top-up" %}</a>
-	<a href="{% url 'dashboard:accounts-withdraw' account.id %}" class="btn">{% trans "Withdraw" %}</a>
+    <a class="btn" href="{% url 'dashboard:accounts-update' 'leonardo_store.apps.dashboard' account.id %}">{% trans "Edit" %}</a>
+	<a href="{% url 'dashboard:accounts-top-up' 'leonardo_store.apps.dashboard' account.id %}" class="btn">{% trans "Top-up" %}</a>
+	<a href="{% url 'dashboard:accounts-withdraw' 'leonardo_store.apps.dashboard' account.id %}" class="btn">{% trans "Withdraw" %}</a>
 	{% if not account.is_frozen %}
-	<a href="{% url 'dashboard:accounts-freeze' account.id %}" class="btn btn-danger">{% trans "Freeze" %}</a>
+	<a href="{% url 'dashboard:accounts-freeze' 'leonardo_store.apps.dashboard' account.id %}" class="btn btn-danger">{% trans "Freeze" %}</a>
 	{% else %}
-	<a href="{% url 'dashboard:accounts-thaw' account.id %}" class="btn btn-success">{% trans "Thaw" %}</a>
+	<a href="{% url 'dashboard:accounts-thaw' 'leonardo_store.apps.dashboard' account.id %}" class="btn btn-success">{% trans "Thaw" %}</a>
 	{% endif %}
 </p>
 
@@ -56,7 +56,7 @@
 		<tbody>
 			{% for txn in transactions %}
 			<tr>
-				<td><a href="{% url 'dashboard:transfers-detail' txn.transfer.reference %}">{{ txn.transfer }}</a></td>
+				<td><a href="{% url 'dashboard:transfers-detail' 'leonardo_store.apps.dashboard' txn.transfer.reference %}">{{ txn.transfer }}</a></td>
 				<td>{{ txn.amount|currency }}</td>
 				<td>{{ txn.transfer.description|default:"-" }}</td>
 				<td>{{ txn.transfer.user|default:"-" }}</td>

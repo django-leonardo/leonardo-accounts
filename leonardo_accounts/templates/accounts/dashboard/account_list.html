@@ -1,7 +1,7 @@
 {% extends 'dashboard/layout.html' %}
-{% load url from future %}
 {% load currency_filters %}
 {% load i18n %}
+{% load leonardo_tags %}
 
 {% block title %}
     {{ title }} | {{ block.super }}
@@ -10,7 +10,7 @@
 {% block breadcrumbs %}
     <ul class="breadcrumb">
         <li>
-            <a href="{% url 'dashboard:index' %}">{% trans "Dashboard" %}</a>
+            <a href="{% url 'dashboard:index' 'leonardo_store.apps.dashboard' %}">{% trans "Dashboard" %}</a>
             <span class="divider">/</span>
         </li>
         <li>
@@ -23,7 +23,7 @@
 
 {% block header %}
     <div class="page-header">
-        <a id="create_new_account" href="{% url 'dashboard:accounts-create' %}" class="btn btn-large btn-primary pull-right">{% trans "Create a new " %} {{ unit_name|lower }}</a></p>
+        <a id="create_new_account" href="{% app_reverse 'dashboard:accounts-create' 'leonardo_store.apps.dashboard'  %}" class="btn btn-large btn-primary pull-right">{% trans "Create a new " %} {{ unit_name|lower }}</a></p>
     <h1>{{ title }}</h1>
 </div>
 {% endblock header %}
@@ -38,7 +38,7 @@
         <form method="get" action="." class="form-horizontal">
             {% include 'partials/form_fields.html' %}
             <button type="submit" class="btn btn-primary">{% trans "Search" %}</button>
-            {% trans "or" %} <a href="{% url 'dashboard:accounts-list' %}">{% trans "reset" %}</a>.
+            {% trans "or" %} <a href="{% url 'dashboard:accounts-list' 'leonardo_store.apps.dashboard' %}">{% trans "reset" %}</a>.
         </form>
     </div>
 
@@ -62,7 +62,7 @@
             {% for account in accounts %}
                 {# When we're using bootstrap 2.1, we can use table row colors #}
                 <tr {% if account.is_frozen %}style="color: #aaa"{% endif %}>
-                    <td><a href="{% url 'dashboard:accounts-detail' account.id %}">{{ account.name|default:"-" }}</a></td>
+                    <td><a href="{% url 'dashboard:accounts-detail' 'leonardo_store.apps.dashboard' account.id %}">{{ account.name|default:"-" }}</a></td>
                     <td>{{ account.code|default:"-" }}</td>
                     <td>{{ account.status }}</td>
                     <td>{{ account.start_date|default:"-" }}</td>
@@ -72,18 +72,18 @@
                     <td>{{ account.date_created }}</td>
                     <td>
                         {% if account.is_editable %}
-                            <a href="{% url 'dashboard:accounts-update' account.id %}" class="btn">{% trans "Edit" %}</a>
+                            <a href="{% url 'dashboard:accounts-update' 'leonardo_store.apps.dashboard' account.id %}" class="btn">{% trans "Edit" %}</a>
                         {% else %}
                             <a href="#" class="btn disabled">{% trans "Edit" %}</a>
                         {% endif %}
-                        <a href="{% url 'dashboard:accounts-detail' account.id %}" class="btn">{% trans "Transactions" %}</a>
+                        <a href="{% url 'dashboard:accounts-detail' 'leonardo_store.apps.dashboard' account.id %}" class="btn">{% trans "Transactions" %}</a>
                         {% if account.is_editable %}
-                            <a href="{% url 'dashboard:accounts-top-up' account.id %}" class="btn">{% trans "Top-up" %}</a>
-                            <a href="{% url 'dashboard:accounts-withdraw' account.id %}" class="btn">{% trans "Withdraw" %}</a>
+                            <a href="{% url 'dashboard:accounts-top-up' 'leonardo_store.apps.dashboard' account.id %}" class="btn">{% trans "Top-up" %}</a>
+                            <a href="{% url 'dashboard:accounts-withdraw' 'leonardo_store.apps.dashboard' account.id %}" class="btn">{% trans "Withdraw" %}</a>
                             {% if not account.is_frozen %}
-                                <a href="{% url 'dashboard:accounts-freeze' account.id %}" class="btn btn-danger">{% trans "Freeze" %}</a>
+                                <a href="{% url 'dashboard:accounts-freeze' 'leonardo_store.apps.dashboard' account.id %}" class="btn btn-danger">{% trans "Freeze" %}</a>
                             {% else %}
-                                <a href="{% url 'dashboard:accounts-thaw' account.id %}" class="btn btn-success">{% trans "Thaw" %}</a>
+                                <a href="{% url 'dashboard:accounts-thaw' 'leonardo_store.apps.dashboard' account.id %}" class="btn btn-success">{% trans "Thaw" %}</a>
                             {% endif %}
                         {% else %}
                             <a href="#" class="btn disabled">{% trans "Top-up" %}</a>

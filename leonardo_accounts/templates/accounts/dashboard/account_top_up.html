@@ -1,7 +1,7 @@
 {% extends 'dashboard/layout.html' %}
-{% load url from future %}
 {% load currency_filters %}
 {% load i18n %}
+{% load leonardo_tags %}
 
 {% block title %}
 {% trans "Top-up account" %} #{{ account.id }} | {{ block.super }}
@@ -10,15 +10,15 @@
 {% block breadcrumbs %}
 <ul class="breadcrumb">
     <li>
-		<a href="{% url 'dashboard:index' %}">{% trans "Dashboard" %}</a>
+		<a href="{% url 'dashboard:index' 'leonardo_store.apps.dashboard' %}">{% trans "Dashboard" %}</a>
         <span class="divider">/</span>
     </li>
     <li>
-		<a href="{% url 'dashboard:accounts-list' %}">{% trans "Accounts" %}</a>
+		<a href="{% url 'dashboard:accounts-list' 'leonardo_store.apps.dashboard' %}">{% trans "Accounts" %}</a>
         <span class="divider">/</span>
     </li>
     <li>
-        <a href="{% url 'dashboard:accounts-detail' account.id %}">{{ account }}</a>
+        <a href="{% url 'dashboard:accounts-detail' 'leonardo_store.apps.dashboard' account.id %}">{{ account }}</a>
         <span class="divider">/</span>
     </li>
     <li class="active">{% trans "Top up" %}</li>
@@ -39,7 +39,7 @@
         {% endif %}
 		{% include 'partials/form_field.html' with field=form.amount %}
 		<button type="submit" class="btn btn-large btn-success">{% trans "Top-up" %}</button>
-            or <a href="{% url 'dashboard:accounts-detail' account.id %}">{% trans "cancel" %}</a>.
+            or <a href="{% url 'dashboard:accounts-detail' 'leonardo_store.apps.dashboard' account.id %}">{% trans "cancel" %}</a>.
 	</form>
 	{% else %}
 	<p>{% trans "This account cannot be topped-up." %}</p>

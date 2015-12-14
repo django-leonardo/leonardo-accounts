@@ -1,6 +1,6 @@
 {% extends 'dashboard/layout.html' %}
-{% load url from future %}
 {% load currency_filters %}
+{% load leonardo_tags %}
 {% load i18n %}
 
 {% block title %}
@@ -10,15 +10,15 @@
 {% block breadcrumbs %}
 <ul class="breadcrumb">
     <li>
-		<a href="{% url 'dashboard:index' %}">{% trans "Dashboard" %}</a>
+		<a href="{% url 'dashboard:index' 'leonardo_store.apps.dashboard' %}">{% trans "Dashboard" %}</a>
         <span class="divider">/</span>
     </li>
     <li>
-		<a href="{% url 'dashboard:accounts-list' %}">{% trans "Accounts" %}</a>
+		<a href="{% url 'dashboard:accounts-list' 'leonardo_store.apps.dashboard' %}">{% trans "Accounts" %}</a>
         <span class="divider">/</span>
     </li>
     <li>
-        <a href="{% url 'dashboard:accounts-detail' account.id %}">{{ account }}</a>
+        <a href="{% url 'dashboard:accounts-detail' 'leonardo_store.apps.dashboard' account.id %}">{{ account }}</a>
         <span class="divider">/</span>
     </li>
 	<li class="active">{% trans "Freeze" %}</li>
@@ -34,6 +34,6 @@
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit" class="btn btn-large btn-danger">{% trans "Freeze" %}</button>
-        {% trans "or" %} <a href="{% url 'dashboard:accounts-list' %}">{% trans "cancel" %}</a>.
+        {% trans "or" %} <a href="{% url 'dashboard:accounts-list' 'leonardo_store.apps.dashboard' %}">{% trans "cancel" %}</a>.
     </form>
 {% endblock dashboard_content %}

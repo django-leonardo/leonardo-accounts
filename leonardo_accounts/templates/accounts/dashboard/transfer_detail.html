@@ -1,7 +1,7 @@
 {% extends 'dashboard/layout.html' %}
-{% load url from future %}
 {% load currency_filters %}
 {% load i18n %}
+{% load leonardo_tags %}
 
 {% block title %}
 {% trans "Transfer" %} {{ transfer.reference }} | {{ block.super }}
@@ -10,15 +10,15 @@
 {% block breadcrumbs %}
 <ul class="breadcrumb">
     <li>
-		<a href="{% url 'dashboard:index' %}">{% trans "Dashboard" %}</a>
+		<a href="{% url 'dashboard:index' 'leonardo_store.apps.dashboard' %}">{% trans "Dashboard" %}</a>
         <span class="divider">/</span>
     </li>
     <li>
-		<a href="{% url 'dashboard:accounts-list' %}">{% trans "Accounts" %}</a>
+		<a href="{% url 'dashboard:accounts-list' 'leonardo_store.apps.dashboard' %}">{% trans "Accounts" %}</a>
         <span class="divider">/</span>
     </li>
     <li>
-		<a href="{% url 'transfers-list' %}">{% trans "Transfers" %}</a>
+		<a href="{% url 'transfers-list' 'leonardo_store.apps.dashboard' %}">{% trans "Transfers" %}</a>
         <span class="divider">/</span>
     </li>
 	<li class="active">{{ transfer.reference }}</li>
@@ -37,11 +37,11 @@
 		</tr>
 		<tr>
 			<th>{% trans "Source" %}</th>
-			<td><a href="{% url 'dashboard:accounts-detail' transfer.source.id %}">{{ transfer.source }}</a></td>
+			<td><a href="{% url 'dashboard:accounts-detail' 'leonardo_store.apps.dashboard' transfer.source.id %}">{{ transfer.source }}</a></td>
 		</tr>
 		<tr>
 			<th>{% trans "Destination" %}</th>
-			<td><a href="{% url 'dashboard:accounts-detail' transfer.destination.id %}">{{ transfer.destination }}</a></td>
+			<td><a href="{% url 'dashboard:accounts-detail' 'leonardo_store.apps.dashboard' transfer.destination.id %}">{{ transfer.destination }}</a></td>
 		</tr>
 		<tr>
 			<th>{% trans "Amount" %}</th>
