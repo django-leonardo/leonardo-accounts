@@ -23,6 +23,10 @@ LEONARDO_PLUGINS = [
     ('leonardo_accounts.apps.accounts', ('Accounts: User'),)
 ]
 
+LEONARDO_STORE_PROFILE_ACTIONS = [
+    'leonardo_accounts/_actions.html'
+]
+
 
 class Config(AppConfig):
     name = 'leonardo_accounts'

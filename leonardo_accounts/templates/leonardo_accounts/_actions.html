@@ -1,0 +1,4 @@
+{% load i18n %}
+<li{% if active_tab == 'accounts' %} class="active"{% endif %}>
+<a href="{% url 'accounts:index' %}">{% trans "Accounts" %}</a>
+</li>
