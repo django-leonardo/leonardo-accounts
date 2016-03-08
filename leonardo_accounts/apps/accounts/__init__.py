@@ -1,30 +1,31 @@
 from django.conf.urls import url
+from django.contrib.auth.decorators import login_required
+from leonardo.decorators import require_auth
 
 from .views import *
-from leonardo.decorators import require_auth
 
 urlpatterns = [
     url(r'^$',
-        AccountListView.as_view(),
+        login_required(AccountListView.as_view()),
         name='index'),
 #    url(r'^create/$', self.account_create_view.as_view(),
 #        name='accounts-create'),
-    url(r'^(?P<pk>\d+)/update/$', AccountUpdateView.as_view(),
+    url(r'^(?P<pk>\d+)/update/$', login_required(AccountUpdateView.as_view()),
         name='accounts-update'),
-    url(r'^(?P<pk>\d+)/$', TransferListView.as_view(),
+    url(r'^(?P<pk>\d+)/$', login_required(TransferListView.as_view()),
         name='accounts-detail'),
 #    url(r'^(?P<pk>\d+)/freeze/$', self.account_freeze_view.as_view(),
 #        name='accounts-freeze'),
 #    url(r'^(?P<pk>\d+)/thaw/$', self.account_thaw_view.as_view(),
 #        name='accounts-thaw'),
-    url(r'^(?P<pk>\d+)/top-up/$', AccountTopUpView.as_view(),
+    url(r'^(?P<pk>\d+)/top-up/$', login_required(AccountTopUpView.as_view()),
         name='accounts-top-up'),
-    url(r'^(?P<pk>\d+)/withdraw/$', AccountWithdrawView.as_view(),
+    url(r'^(?P<pk>\d+)/withdraw/$', login_required(AccountWithdrawView.as_view()),
         name='accounts-withdraw'),
-    url(r'^transfers/$', TransferListView.as_view(),
+    url(r'^transfers/$', login_required(TransferListView.as_view()),
         name='transfers-list'),
     url(r'^transfers/(?P<reference>[A-Z0-9]{32})/$',
-        TransferDetailView.as_view(),
+        login_required(TransferDetailView.as_view()),
         name='transfers-detail'),
 #    url(r'^reports/deferred-income/$',
 #        self.report_deferred_income.as_view(),
