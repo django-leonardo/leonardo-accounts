@@ -83,13 +83,14 @@ class PaymentDetailsView(views.PaymentDetailsView):
                 "Your account allocations do not cover the order total")
 
         try:
-            gateway.redeem(order_number, self.request.user, allocations)
+            transactions = gateway.redeem(
+                order_number, self.request.user, allocations)
         except act_exceptions.AccountException:
             raise exceptions.UnableToTakePayment(
                 "An error occurred with the account redemption")
 
         # flush session allocations
-        #self.set_account_allocations(Allocations())
+        # self.set_account_allocations(Allocations())
 
         # If we get here, payment was successful.  We record the payment
         # sources and event to complete the audit trail for this order
@@ -100,7 +101,9 @@ class PaymentDetailsView(views.PaymentDetailsView):
                 source_type=source_type,
                 amount_debited=amount, reference=code)
             self.add_payment_source(source)
-        self.add_payment_event("Settle", total.incl_tax)
+
+        self.add_payment_event("Settled", total.incl_tax,
+                               reference=transactions[0])
 
     # Custom form-handling methods
 
@@ -162,7 +165,7 @@ class PaymentDetailsView(views.PaymentDetailsView):
         request.method = "GET"
 
         return self.render_payment_details(request, **ctx)
-        #return http.HttpResponseRedirect(reverse(
+        # return http.HttpResponseRedirect(reverse(
         #    'checkout:payment-details'))
 
     def remove_allocation(self, request):
@@ -179,7 +182,7 @@ class PaymentDetailsView(views.PaymentDetailsView):
             self.set_account_allocations(allocations)
             messages.success(request, _("Allocation removed"))
         return self.render_payment_details(request)
-        #return http.HttpResponseRedirect(reverse('checkout:payment-details'))
+        # return http.HttpResponseRedirect(reverse('checkout:payment-details'))
 
     def store_allocation_in_session(self, form):
         allocations = self.get_account_allocations()
