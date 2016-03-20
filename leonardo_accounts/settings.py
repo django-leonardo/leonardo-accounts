@@ -1,5 +1,5 @@
 
-from oscar.defaults import OSCAR_DASHBOARD_NAVIGATION
+from leonardo.settings import OSCAR_DASHBOARD_NAVIGATION
 
 OSCAR_DASHBOARD_NAVIGATION.append(
     {
@@ -8,19 +8,19 @@ OSCAR_DASHBOARD_NAVIGATION.append(
         'children': [
             {
                 'label': 'Accounts',
-                'url_name': 'dashboard:accounts-list',
+                'url_name': 'accounts-list',
             },
             {
                 'label': 'Transfers',
-                'url_name': 'dashboard:transfers-list',
+                'url_name': 'transfers-list',
             },
             {
                 'label': 'Deferred income report',
-                'url_name': 'dashboard:report-deferred-income',
+                'url_name': 'report-deferred-income',
             },
             {
                 'label': 'Profit/loss report',
-                'url_name': 'dashboard:report-profit-loss',
+                'url_name': 'report-profit-loss',
             },
         ]
     })
